@@ -222,7 +222,7 @@ namespace UnrealPakGUI
         {
             string ProjectName = Path.GetFileNameWithoutExtension(ProjectFilePath);
             string ResponseFileDir = @".\ResponseFiles";
-            string ResponseFilePath = Path.Combine(ResponseFileDir, $"{ProjectName}-{DateTime.Now.ToString("yyyy-mm-dd_hh-MM-ss")}.txt");
+            string ResponseFilePath = Path.Combine(ResponseFileDir, $"{ProjectName}-{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss")}.txt");
             string MountPoint = $"../../../{ProjectName}";
 
             List<string> Lines = new List<string>();
