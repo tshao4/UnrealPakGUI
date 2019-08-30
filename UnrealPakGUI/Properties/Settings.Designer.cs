@@ -70,5 +70,53 @@ namespace UnrealPakGUI.Properties {
                 this["bUseEncryption"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BatchOutputDir {
+            get {
+                return ((string)(this["BatchOutputDir"]));
+            }
+            set {
+                this["BatchOutputDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bContentOnly {
+            get {
+                return ((bool)(this["bContentOnly"]));
+            }
+            set {
+                this["bContentOnly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bAsPatch {
+            get {
+                return ((bool)(this["bAsPatch"]));
+            }
+            set {
+                this["bAsPatch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bFolderPak {
+            get {
+                return ((bool)(this["bFolderPak"]));
+            }
+            set {
+                this["bFolderPak"] = value;
+            }
+        }
     }
 }

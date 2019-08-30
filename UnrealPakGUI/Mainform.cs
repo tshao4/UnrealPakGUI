@@ -14,21 +14,31 @@ namespace UnrealPakGUI
 {
     public partial class MainForm : Form
     {
+        private delegate void PassStringDelegate(string Line);
+        FormLogs Logs;
+        const string UnrealPakRelativePath = @"Engine\Binaries\Win64\UnrealPak.exe";
+        string UnrealPakPath;
+        string CryptoFilePath;
+        string ProjectFilePath;
+        string BatchOutputPath;
+        bool bContentOnly = false;
+        bool bEncryption = false;
+        bool bAsPatch = false;
+        bool bBatchMode = false;
+        int BatchCount = 0;
+        int BatchTotal = 0;
+
         public MainForm()
         {
             InitializeComponent();
             Logs = new FormLogs();
         }
 
-        const string UnrealPakRelativePath = @"Engine\Binaries\Win64\UnrealPak.exe";
-        string CmdStr = string.Empty;
-        FormLogs Logs;
-
         private void BTN_BrowseEngineDir_Click(object sender, EventArgs e)
         {
-            if (DialogResult.OK == FBD_BrowseEngineDir.ShowDialog())
+            if (DialogResult.OK == FBD_BrowseDir.ShowDialog())
             {
-                TB_EngineDir.Text = FBD_BrowseEngineDir.SelectedPath;
+                TB_EngineDir.Text = FBD_BrowseDir.SelectedPath;
             }
         }
 
@@ -48,33 +58,6 @@ namespace UnrealPakGUI
             }
         }
 
-        private void BTN_AddFiles_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.OK == OFD_AddFiles.ShowDialog())
-            {
-                LB_FilesToPak.BeginUpdate();
-                foreach (string FileName in OFD_AddFiles.FileNames.Where(FileName => !LB_FilesToPak.Items.Contains(FileName)))
-                {
-                    LB_FilesToPak.Items.Add(FileName);
-                }
-                LB_FilesToPak.EndUpdate();
-            }
-        }
-
-        private void BTN_AddDir_Click(object sender, EventArgs e)
-        {
-            if (DialogResult.OK == FBD_AddDir.ShowDialog())
-            {
-                LB_FilesToPak.BeginUpdate();
-                foreach (string FileName in Directory.EnumerateFiles(FBD_AddDir.SelectedPath, "*.*", SearchOption.AllDirectories)
-                    .Where(FileName => !LB_FilesToPak.Items.Contains(FileName)))
-                {
-                    LB_FilesToPak.Items.Add(FileName);
-                }
-                LB_FilesToPak.EndUpdate();
-            }
-        }
-
         private void BTN_RemoveItems_Click(object sender, EventArgs e)
         {
             LB_FilesToPak.BeginUpdate();
@@ -88,51 +71,22 @@ namespace UnrealPakGUI
 
         private void BTN_RemoveAll_Click(object sender, EventArgs e)
         {
-            LB_FilesToPak.BeginUpdate();
             LB_FilesToPak.Items.Clear();
-            LB_FilesToPak.EndUpdate();
         }
 
         private void BTN_CreatePak_Click(object sender, EventArgs e)
         {
-            string UnrealPakPath = Path.Combine(TB_EngineDir.Text, UnrealPakRelativePath);
-            string CryptoFilePath = TB_CryptoFile.Text;
-            string ProjectFilePath = TB_ProjectFile.Text;
-            bool bEncryption = CKB_Encryption.Checked;
-            string[] FilesToPak = LB_FilesToPak.Items.Cast<string>().ToArray() ;
-            string ResponseFilePath = string.Empty;
-            string OutputFilePath = string.Empty;
-            string Args = string.Empty;
+            bBatchMode = false;
+            ApplyConfigs();
 
-            if (!File.Exists(UnrealPakPath))
+            if (!ValidateConfigs())
             {
-                MessageBox.Show($"Could not find UnrealPak.exe at {UnrealPakPath}!", "UnrealPak.exe Not Found");
                 return;
             }
-
-            if (bEncryption && !File.Exists(CryptoFilePath))
-            {                
-                MessageBox.Show("Crypto File does not exist!", "Missing Crypto File");
-                return;
-            }
-
-            if (!File.Exists(ProjectFilePath))
-            {
-                MessageBox.Show("Project File does not exist!", "Missing Project File");
-                return;
-            }
-
-            if (FilesToPak.Count() == 0)
+            
+            if (LB_FilesToPak.Items.Count == 0)
             {
                 MessageBox.Show("Nothing to Pak!", "Nothing to Pak");
-                return;
-            }
-
-            ResponseFilePath = CreateResponseFile(FilesToPak, ProjectFilePath, bEncryption);
-
-            if (!File.Exists(ResponseFilePath))
-            {
-                MessageBox.Show($"Unable to create response file: {ResponseFilePath}", "Response File");
                 return;
             }
 
@@ -141,21 +95,72 @@ namespace UnrealPakGUI
                 return;
             }
 
-            OutputFilePath = OFD_BrowseOutputFile.FileName;
+            ShowLog("///////////////////////// START PACKING /////////////////////////");
 
-            Args = OutputFilePath
-                + $" -create={ResponseFilePath}";
+            string[] FilesToPak = LB_FilesToPak.Items.Cast<string>().ToArray();
+            PakBatch Batch = new PakBatch(FilesToPak);
+            Batch.OutputPath = OFD_BrowseOutputFile.FileName;
+            CreateSinglePak(Batch);
+        }
 
-            if (bEncryption)
+        private void BTN_BrowseBatchOutputDir_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == FBD_BrowseDir.ShowDialog())
             {
-                Args += $" -cryptokeys={CryptoFilePath}" + " -encryptindex";
+                TB_BatchOutputDir.Text = FBD_BrowseDir.SelectedPath;
+            }
+        }
+
+        private void BTN_BatchRemove_Click(object sender, EventArgs e)
+        {
+            TreeNode NodeToRemove = TV_BatchFiles.SelectedNode;
+            while (NodeToRemove.Parent != null)
+            {
+                NodeToRemove = NodeToRemove.Parent;
+            }
+            TV_BatchFiles.Nodes.Remove(NodeToRemove);
+        }
+
+        private void BTN_BatchRemoveAll_Click(object sender, EventArgs e)
+        {
+            TV_BatchFiles.Nodes.Clear();
+        }
+
+        private void BTN_BatchCreatePaks_Click(object sender, EventArgs e)
+        {
+            bBatchMode = true;
+            ApplyConfigs();
+            if (!ValidateConfigs())
+            {
+                return;
+            }
+            
+            if (TV_BatchFiles.Nodes.Count == 0)
+            {
+                MessageBox.Show("Nothing to Pak!", "Nothing to Pak");
+                return;
             }
 
-            Args += " -patchpaddingalign=2048"
-                + $" -compressionformats={ProjectFilePath}"
-                + " -multiprocess";
+            if (!Directory.Exists(BatchOutputPath))
+            {
+                MessageBox.Show("Output directory does not exist!");
+                return;
+            }
 
-            RunUnrealPak(UnrealPakPath, Args);
+            ShowLog("////////////////////// START BATCH PACKING //////////////////////");
+
+            BatchCount = BatchTotal = TV_BatchFiles.GetNodeCount(false);
+
+            foreach (TreeNode Node in TV_BatchFiles.Nodes)
+            {
+                PakBatch Batch = Node.Tag as PakBatch;
+                Batch.OutputPath = BatchOutputPath;
+                if (Batch == null)
+                {
+                    continue;
+                }
+                CreateSinglePak(Batch);
+            }
         }
 
         private void LB_FilesToPak_DragEnter(object sender, DragEventArgs e)
@@ -204,13 +209,174 @@ namespace UnrealPakGUI
             LB_FilesToPak.EndUpdate();
         }
 
+        private void TV_BatchFiles_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void TV_BatchFiles_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void TV_BatchFiles_DragDrop(object sender, DragEventArgs e)
+        {
+            TV_BatchFiles.BeginUpdate();
+            string[] FileNames = e.Data.GetData(DataFormats.FileDrop, false) as string[];
+            if (CKB_FolderPak.Checked)
+            {
+                List<string> SingleFiles = new List<string>();
+                foreach (string FileName in FileNames)
+                {
+                    if (IsDirectory(FileName))
+                    {
+                        PakBatch Batch = new PakBatch(Directory.EnumerateFiles(FileName, "*.*", SearchOption.AllDirectories).ToArray());
+                        TreeNode Node = new TreeNode(Batch.BatchNodeText);
+                        Node.Tag = Batch;
+                        foreach (string SubDirFileName in Batch.Files)
+                        {
+                            Node.Nodes.Add(new TreeNode(SubDirFileName.Substring(Batch.CommonPath.Length)));
+                        }
+                        TV_BatchFiles.Nodes.Add(Node);
+                    }
+                    else
+                    {
+                        SingleFiles.Add(FileName);
+                    }
+                }
+
+                if (SingleFiles.Count > 0)
+                {
+                    PakBatch Batch = new PakBatch(SingleFiles.ToArray());
+                    TreeNode Node = new TreeNode(Batch.BatchNodeText);
+                    Node.Tag = Batch;
+                    TV_BatchFiles.Nodes.Add(Node);
+                }
+            }
+            else
+            {
+                PakBatch Batch = new PakBatch(FileNames);
+                TreeNode Node = new TreeNode(Batch.BatchNodeText);
+                Node.Tag = Batch;
+                foreach (string FileName in FileNames)
+                {
+                    if (IsDirectory(FileName))
+                    {
+                        foreach (string SubDirFileName in Directory.EnumerateFiles(FileName, "*.*", SearchOption.AllDirectories))
+                        {
+                            Node.Nodes.Add(new TreeNode(SubDirFileName.Substring(Batch.CommonPath.Length)));
+                        }
+                    }
+                    else
+                    {
+                        Node.Nodes.Add(new TreeNode(FileName.Substring(Batch.CommonPath.Length)));
+                    }
+                }
+                TV_BatchFiles.Nodes.Add(Node);
+                TV_BatchFiles.CollapseAll();
+                Node.Expand();
+            }
+            TV_BatchFiles.EndUpdate();
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default["EngineDir"] = TB_EngineDir.Text;
             Properties.Settings.Default["CryptoFile"] = TB_CryptoFile.Text;
             Properties.Settings.Default["ProjectFile"] = TB_ProjectFile.Text;
+            Properties.Settings.Default["BatchOutputDir"] = TB_BatchOutputDir.Text;
+            Properties.Settings.Default["bContentOnly"] = CKB_ContentOnly.Checked;
             Properties.Settings.Default["bUseEncryption"] = CKB_Encryption.Checked;
+            Properties.Settings.Default["bAsPatch"] = CKB_AsPatch.Checked;
+            Properties.Settings.Default["bFolderPak"] = CKB_FolderPak.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private bool ValidateConfigs()
+        {
+            if (!File.Exists(UnrealPakPath))
+            {
+                MessageBox.Show($"Could not find UnrealPak.exe at {UnrealPakPath}!", "UnrealPak.exe Not Found");
+                return false;
+            }
+
+            if (bEncryption && !File.Exists(CryptoFilePath))
+            {
+                MessageBox.Show("Crypto File does not exist!", "Missing Crypto File");
+                return false;
+            }
+
+            if (!File.Exists(ProjectFilePath))
+            {
+                MessageBox.Show("Project File does not exist!", "Missing Project File");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ApplyConfigs()
+        {
+            UnrealPakPath = Path.Combine(TB_EngineDir.Text, UnrealPakRelativePath);
+            CryptoFilePath = TB_CryptoFile.Text;
+            ProjectFilePath = TB_ProjectFile.Text;
+            BatchOutputPath = TB_BatchOutputDir.Text;
+            bContentOnly = CKB_ContentOnly.Checked;
+            bEncryption = CKB_Encryption.Checked;
+            bAsPatch = CKB_AsPatch.Checked;
+        }
+
+        private void CreateSinglePak(PakBatch Batch)
+        {
+            string ResponseFilePath = string.Empty;
+            List<string> Args = new List<string>();
+
+            ResponseFilePath = CreateResponseFile(Batch);
+
+            if (!File.Exists(ResponseFilePath))
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Batch.OutputPath))
+            {
+                return;
+            }
+
+            string FileOutputPath = Batch.OutputPath;
+            if (bAsPatch)
+            {
+                FileOutputPath = FileOutputPath.Insert(FileOutputPath.LastIndexOf(".pak"), "_p");
+            }
+
+            Args.Add(FileOutputPath);
+            Args.Add($"-create={ResponseFilePath}");
+
+            if (bEncryption)
+            {
+                Args.Add($"-cryptokeys={CryptoFilePath}");
+                Args.Add("-encryptindex");
+            }
+
+            Args.Add("-patchpaddingalign=2048");
+            Args.Add($"-compressionformats={ProjectFilePath}");
+            Args.Add("-multiprocess");
+            
+            RunUnrealPak(Args.ToArray());
         }
 
         private bool IsDirectory(string FileName)
@@ -218,12 +384,13 @@ namespace UnrealPakGUI
             return Directory.Exists(FileName);
         }
 
-        private string CreateResponseFile(string[] FilesToPak, string ProjectFilePath, bool bEncrytion)
+        private string CreateResponseFile(PakBatch Batch)
         {
+            string[] FilesToPak = Batch.Files;
             string ProjectName = Path.GetFileNameWithoutExtension(ProjectFilePath);
             string ResponseFileDir = @".\ResponseFiles";
-            string ResponseFilePath = Path.Combine(ResponseFileDir, $"{ProjectName}-{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss")}.txt");
-            string MountPoint = $"../../../{ProjectName}";
+            string ResponseFilePath = Path.Combine(ResponseFileDir, $"{ProjectName}-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}");
+            string MountPoint = bContentOnly ? $"../../../{ProjectName}/" : Batch.CommonPath.Replace(@"\", "/");
 
             List<string> Lines = new List<string>();
 
@@ -232,7 +399,7 @@ namespace UnrealPakGUI
                 string FileName = FilesToPak[i];
                 string FileExtension = Path.GetExtension(FileName);
 
-                int RelativeIndex = FileName.LastIndexOf(@"\Content\");
+                int RelativeIndex = bContentOnly ? FileName.LastIndexOf(@"Content\") : Batch.CommonPath.Length;
                 if (RelativeIndex < 0)
                 {
                     continue;
@@ -240,7 +407,7 @@ namespace UnrealPakGUI
 
                 string RelativeFilePath = MountPoint + FileName.Substring(RelativeIndex).Replace(@"\", "/");
                 string Line = "\"" + FileName + "\" \"" + RelativeFilePath + "\"";
-                if (bEncrytion && FileExtension == ".uasset" || FileExtension == ".ini")
+                if (bEncryption && FileExtension == ".uasset" || FileExtension == ".ini")
                 {
                     Line += " -encrypt";
                 }
@@ -250,45 +417,95 @@ namespace UnrealPakGUI
 
             if (Lines.Count == 0)
             {
-                return "No eligible file!";
+                string ErrMsg = $"ERROR: No eligible file{ (bBatchMode ? $" for batch {Batch.BatchNodeText}!" : "!") }";
+                ShowLog(ErrMsg);
+                return string.Empty;
             }
 
             if (!Directory.Exists(ResponseFileDir))
             {
                 Directory.CreateDirectory(ResponseFileDir);
-            }            
+            }
+
+            if (File.Exists(ResponseFilePath + ".txt"))
+            {
+                int DuplicateCount = 1;
+                while (File.Exists(ResponseFilePath + $"_{DuplicateCount}.txt"))
+                {
+                    DuplicateCount++;
+                }
+                ResponseFilePath += $"_{DuplicateCount}.txt";
+            }
+            else
+            {
+                ResponseFilePath += ".txt";
+            }
 
             File.WriteAllLines(ResponseFilePath, Lines);
 
             return Path.GetFullPath(ResponseFilePath);
         }
 
-        private void RunUnrealPak(string UnrealPakPath, string Args)
+        private void RunUnrealPak(string[] Args)
         {
-            CmdStr = UnrealPakPath + " " + Args;
-            Thread Worker = new Thread(RunUnrealPakWorker);
+            Thread Worker = new Thread(() => RunUnrealPakWorker(Args));
             Worker.IsBackground = true;
             Worker.Start();
         }
 
-        private void RunUnrealPakWorker()
+        private void RunUnrealPakWorker(string[] Args)
         {
-            ProcessStartInfo StartInfo = new ProcessStartInfo("cmd.exe");
+            string CombinedArgs = string.Empty;
+            foreach (string Arg in Args)
+            {
+                CombinedArgs += Arg + " ";
+            }
+            CombinedArgs.Trim();
+
+            ProcessStartInfo StartInfo = new ProcessStartInfo(UnrealPakPath, CombinedArgs);
             StartInfo.CreateNoWindow = true;
-            StartInfo.RedirectStandardInput = true;
-            StartInfo.RedirectStandardOutput = true;
-            StartInfo.RedirectStandardError = true;
+            StartInfo.RedirectStandardOutput = !bBatchMode;
+            StartInfo.RedirectStandardError = !bBatchMode;
             StartInfo.UseShellExecute = false;
             Process CmdProc = Process.Start(StartInfo);
-            StreamWriter Writer = CmdProc.StandardInput;
-            Writer.WriteLine(CmdStr);
-            Writer.WriteLine("exit");
-            Writer.Close();
 
-            CmdProc.OutputDataReceived += new DataReceivedEventHandler(OnOutputDataReceived);
-            CmdProc.BeginOutputReadLine();
+            if (!bBatchMode)
+            {
+                ShowLog($"Running command: {UnrealPakPath} {CombinedArgs}");
+                CmdProc.OutputDataReceived += new DataReceivedEventHandler(OnOutputDataReceived);
+                CmdProc.BeginOutputReadLine();
+            }
+
             CmdProc.WaitForExit();
             CmdProc.Close();
+
+            if (bBatchMode)
+            {
+                ReportPakCreated(Args[0]);
+            }
+            else
+            {
+                ShowLog("///////////////////////// DONE PACKING //////////////////////////");
+            }
+        }
+
+        private void ReportPakCreated(string PakName)
+        {
+            if (this.InvokeRequired)
+            {
+                PassStringDelegate Delegate = ReportPakCreated;
+                object[] Args = { PakName };
+                this.Invoke(Delegate, Args);
+            }
+            else
+            {
+                BatchCount--;
+                ShowLog($"{BatchTotal - BatchCount} of {BatchTotal} - Pak file created: {PakName}");
+                if (BatchCount == 0)
+                {
+                    ShowLog("////////////////////// DONE BATCH PACKING ///////////////////////");
+                }
+            }
         }
 
         private void OnOutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -299,12 +516,11 @@ namespace UnrealPakGUI
             }
         }
 
-        private delegate void ShowLogDelegate(string Line);
         private void ShowLog(string Line)
         {
             if (this.InvokeRequired)
             {
-                ShowLogDelegate Delegate = ShowLog;
+                PassStringDelegate Delegate = ShowLog;
                 object[] Args = { Line };
                 this.Invoke(Delegate, Args);
             }

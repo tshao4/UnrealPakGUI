@@ -28,43 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.BTN_BrowseEngineDir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.BTN_BrowseCryptoFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.OFD_BrowseCryptoFile = new System.Windows.Forms.OpenFileDialog();
-            this.FBD_BrowseEngineDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.FBD_BrowseDir = new System.Windows.Forms.FolderBrowserDialog();
             this.OFD_BrowseOutputFile = new System.Windows.Forms.OpenFileDialog();
             this.LB_FilesToPak = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.BTN_BrowseProjectFile = new System.Windows.Forms.Button();
             this.OFD_BrowseProjectFile = new System.Windows.Forms.OpenFileDialog();
             this.BTN_RemoveItems = new System.Windows.Forms.Button();
-            this.BTN_AddFiles = new System.Windows.Forms.Button();
-            this.BTN_AddDir = new System.Windows.Forms.Button();
             this.BTN_CreatePak = new System.Windows.Forms.Button();
             this.OFD_AddFiles = new System.Windows.Forms.OpenFileDialog();
-            this.FBD_AddDir = new System.Windows.Forms.FolderBrowserDialog();
             this.CKB_Encryption = new System.Windows.Forms.CheckBox();
-            this.TB_ProjectFile = new System.Windows.Forms.TextBox();
-            this.TB_CryptoFile = new System.Windows.Forms.TextBox();
-            this.TB_EngineDir = new System.Windows.Forms.TextBox();
             this.BTN_RemoveAll = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.TV_BatchFiles = new System.Windows.Forms.TreeView();
+            this.CKB_FolderPak = new System.Windows.Forms.CheckBox();
+            this.CKB_AsPatch = new System.Windows.Forms.CheckBox();
+            this.BTN_BatchRemove = new System.Windows.Forms.Button();
+            this.BTN_BatchCreatePaks = new System.Windows.Forms.Button();
+            this.BTN_BatchRemoveAll = new System.Windows.Forms.Button();
+            this.BTN_BrowseBatchOutputDir = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TB_BatchOutputDir = new System.Windows.Forms.TextBox();
+            this.TT_ToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.CKB_ContentOnly = new System.Windows.Forms.CheckBox();
+            this.TB_ProjectFile = new System.Windows.Forms.TextBox();
+            this.TB_CryptoFile = new System.Windows.Forms.TextBox();
+            this.TB_EngineDir = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // BTN_BrowseEngineDir
             // 
             this.BTN_BrowseEngineDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_BrowseEngineDir.Location = new System.Drawing.Point(864, 11);
+            this.BTN_BrowseEngineDir.Location = new System.Drawing.Point(734, 11);
             this.BTN_BrowseEngineDir.Name = "BTN_BrowseEngineDir";
             this.BTN_BrowseEngineDir.Size = new System.Drawing.Size(32, 23);
-            this.BTN_BrowseEngineDir.TabIndex = 2;
+            this.BTN_BrowseEngineDir.TabIndex = 1;
             this.BTN_BrowseEngineDir.Text = "...";
+            this.TT_ToolTip.SetToolTip(this.BTN_BrowseEngineDir, "Browse Engine Directory");
             this.BTN_BrowseEngineDir.UseVisualStyleBackColor = true;
             this.BTN_BrowseEngineDir.Click += new System.EventHandler(this.BTN_BrowseEngineDir_Click);
             // 
@@ -80,11 +92,12 @@
             // BTN_BrowseCryptoFile
             // 
             this.BTN_BrowseCryptoFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_BrowseCryptoFile.Location = new System.Drawing.Point(864, 38);
+            this.BTN_BrowseCryptoFile.Location = new System.Drawing.Point(734, 38);
             this.BTN_BrowseCryptoFile.Name = "BTN_BrowseCryptoFile";
             this.BTN_BrowseCryptoFile.Size = new System.Drawing.Size(32, 23);
-            this.BTN_BrowseCryptoFile.TabIndex = 2;
+            this.BTN_BrowseCryptoFile.TabIndex = 3;
             this.BTN_BrowseCryptoFile.Text = "...";
+            this.TT_ToolTip.SetToolTip(this.BTN_BrowseCryptoFile, "Browse Crypto file");
             this.BTN_BrowseCryptoFile.UseVisualStyleBackColor = true;
             this.BTN_BrowseCryptoFile.Click += new System.EventHandler(this.BTN_BrowseCryptoFile_Click);
             // 
@@ -119,8 +132,9 @@
             this.LB_FilesToPak.Location = new System.Drawing.Point(6, 6);
             this.LB_FilesToPak.Name = "LB_FilesToPak";
             this.LB_FilesToPak.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.LB_FilesToPak.Size = new System.Drawing.Size(759, 484);
-            this.LB_FilesToPak.TabIndex = 4;
+            this.LB_FilesToPak.Size = new System.Drawing.Size(629, 436);
+            this.LB_FilesToPak.TabIndex = 0;
+            this.TT_ToolTip.SetToolTip(this.LB_FilesToPak, "Pack files into a single pak file. Supports drag-n-drop.");
             this.LB_FilesToPak.DragDrop += new System.Windows.Forms.DragEventHandler(this.LB_FilesToPak_DragDrop);
             this.LB_FilesToPak.DragEnter += new System.Windows.Forms.DragEventHandler(this.LB_FilesToPak_DragEnter);
             this.LB_FilesToPak.DragOver += new System.Windows.Forms.DragEventHandler(this.LB_FilesToPak_DragOver);
@@ -130,18 +144,19 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 70);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 12);
+            this.label4.Size = new System.Drawing.Size(83, 12);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Project File";
+            this.label4.Text = "UProject File";
             // 
             // BTN_BrowseProjectFile
             // 
             this.BTN_BrowseProjectFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_BrowseProjectFile.Location = new System.Drawing.Point(864, 65);
+            this.BTN_BrowseProjectFile.Location = new System.Drawing.Point(734, 65);
             this.BTN_BrowseProjectFile.Name = "BTN_BrowseProjectFile";
             this.BTN_BrowseProjectFile.Size = new System.Drawing.Size(32, 23);
-            this.BTN_BrowseProjectFile.TabIndex = 2;
+            this.BTN_BrowseProjectFile.TabIndex = 5;
             this.BTN_BrowseProjectFile.Text = "...";
+            this.TT_ToolTip.SetToolTip(this.BTN_BrowseProjectFile, "Browse UProject file");
             this.BTN_BrowseProjectFile.UseVisualStyleBackColor = true;
             this.BTN_BrowseProjectFile.Click += new System.EventHandler(this.BTN_BrowseProjectFile_Click);
             // 
@@ -153,44 +168,24 @@
             // BTN_RemoveItems
             // 
             this.BTN_RemoveItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_RemoveItems.Location = new System.Drawing.Point(776, 92);
+            this.BTN_RemoveItems.Location = new System.Drawing.Point(646, 6);
             this.BTN_RemoveItems.Name = "BTN_RemoveItems";
             this.BTN_RemoveItems.Size = new System.Drawing.Size(90, 30);
-            this.BTN_RemoveItems.TabIndex = 6;
+            this.BTN_RemoveItems.TabIndex = 1;
             this.BTN_RemoveItems.Text = "Remove";
+            this.TT_ToolTip.SetToolTip(this.BTN_RemoveItems, "Remove selected files.");
             this.BTN_RemoveItems.UseVisualStyleBackColor = true;
             this.BTN_RemoveItems.Click += new System.EventHandler(this.BTN_RemoveItems_Click);
-            // 
-            // BTN_AddFiles
-            // 
-            this.BTN_AddFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_AddFiles.Location = new System.Drawing.Point(775, 12);
-            this.BTN_AddFiles.Name = "BTN_AddFiles";
-            this.BTN_AddFiles.Size = new System.Drawing.Size(90, 30);
-            this.BTN_AddFiles.TabIndex = 7;
-            this.BTN_AddFiles.Text = "Add Files";
-            this.BTN_AddFiles.UseVisualStyleBackColor = true;
-            this.BTN_AddFiles.Click += new System.EventHandler(this.BTN_AddFiles_Click);
-            // 
-            // BTN_AddDir
-            // 
-            this.BTN_AddDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_AddDir.Location = new System.Drawing.Point(776, 52);
-            this.BTN_AddDir.Name = "BTN_AddDir";
-            this.BTN_AddDir.Size = new System.Drawing.Size(90, 30);
-            this.BTN_AddDir.TabIndex = 7;
-            this.BTN_AddDir.Text = "Add Dir";
-            this.BTN_AddDir.UseVisualStyleBackColor = true;
-            this.BTN_AddDir.Click += new System.EventHandler(this.BTN_AddDir_Click);
             // 
             // BTN_CreatePak
             // 
             this.BTN_CreatePak.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_CreatePak.Location = new System.Drawing.Point(775, 172);
+            this.BTN_CreatePak.Location = new System.Drawing.Point(646, 86);
             this.BTN_CreatePak.Name = "BTN_CreatePak";
             this.BTN_CreatePak.Size = new System.Drawing.Size(90, 30);
-            this.BTN_CreatePak.TabIndex = 6;
+            this.BTN_CreatePak.TabIndex = 3;
             this.BTN_CreatePak.Text = "Create Pak";
+            this.TT_ToolTip.SetToolTip(this.BTN_CreatePak, "Start packing!");
             this.BTN_CreatePak.UseVisualStyleBackColor = true;
             this.BTN_CreatePak.Click += new System.EventHandler(this.BTN_CreatePak_Click);
             // 
@@ -204,57 +199,23 @@
             this.CKB_Encryption.AutoSize = true;
             this.CKB_Encryption.Checked = true;
             this.CKB_Encryption.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CKB_Encryption.Location = new System.Drawing.Point(806, 100);
+            this.CKB_Encryption.Location = new System.Drawing.Point(677, 96);
             this.CKB_Encryption.Name = "CKB_Encryption";
             this.CKB_Encryption.Size = new System.Drawing.Size(84, 16);
-            this.CKB_Encryption.TabIndex = 5;
+            this.CKB_Encryption.TabIndex = 7;
             this.CKB_Encryption.Text = "Encryption";
+            this.TT_ToolTip.SetToolTip(this.CKB_Encryption, "Encrypt pak file. A valid Crypto file is nessessary.");
             this.CKB_Encryption.UseVisualStyleBackColor = true;
-            // 
-            // TB_ProjectFile
-            // 
-            this.TB_ProjectFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_ProjectFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "ProjectFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TB_ProjectFile.Location = new System.Drawing.Point(107, 66);
-            this.TB_ProjectFile.Name = "TB_ProjectFile";
-            this.TB_ProjectFile.ReadOnly = true;
-            this.TB_ProjectFile.Size = new System.Drawing.Size(751, 21);
-            this.TB_ProjectFile.TabIndex = 0;
-            this.TB_ProjectFile.Text = global::UnrealPakGUI.Properties.Settings.Default.ProjectFile;
-            // 
-            // TB_CryptoFile
-            // 
-            this.TB_CryptoFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_CryptoFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "CryptoFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TB_CryptoFile.Location = new System.Drawing.Point(107, 39);
-            this.TB_CryptoFile.Name = "TB_CryptoFile";
-            this.TB_CryptoFile.ReadOnly = true;
-            this.TB_CryptoFile.Size = new System.Drawing.Size(751, 21);
-            this.TB_CryptoFile.TabIndex = 0;
-            this.TB_CryptoFile.Text = global::UnrealPakGUI.Properties.Settings.Default.CryptoFile;
-            // 
-            // TB_EngineDir
-            // 
-            this.TB_EngineDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_EngineDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "EngineDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TB_EngineDir.Location = new System.Drawing.Point(107, 12);
-            this.TB_EngineDir.Name = "TB_EngineDir";
-            this.TB_EngineDir.ReadOnly = true;
-            this.TB_EngineDir.Size = new System.Drawing.Size(751, 21);
-            this.TB_EngineDir.TabIndex = 0;
-            this.TB_EngineDir.Text = global::UnrealPakGUI.Properties.Settings.Default.EngineDir;
             // 
             // BTN_RemoveAll
             // 
             this.BTN_RemoveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTN_RemoveAll.Location = new System.Drawing.Point(776, 132);
+            this.BTN_RemoveAll.Location = new System.Drawing.Point(646, 46);
             this.BTN_RemoveAll.Name = "BTN_RemoveAll";
             this.BTN_RemoveAll.Size = new System.Drawing.Size(90, 30);
-            this.BTN_RemoveAll.TabIndex = 6;
+            this.BTN_RemoveAll.TabIndex = 2;
             this.BTN_RemoveAll.Text = "Remove All";
+            this.TT_ToolTip.SetToolTip(this.BTN_RemoveAll, "Remove all files.");
             this.BTN_RemoveAll.UseVisualStyleBackColor = true;
             this.BTN_RemoveAll.Click += new System.EventHandler(this.BTN_RemoveAll_Click);
             // 
@@ -265,43 +226,227 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 108);
+            this.tabControl1.Location = new System.Drawing.Point(12, 100);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(884, 526);
+            this.tabControl1.Size = new System.Drawing.Size(754, 476);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.LB_FilesToPak);
-            this.tabPage1.Controls.Add(this.BTN_AddDir);
-            this.tabPage1.Controls.Add(this.BTN_AddFiles);
             this.tabPage1.Controls.Add(this.BTN_RemoveItems);
             this.tabPage1.Controls.Add(this.BTN_CreatePak);
             this.tabPage1.Controls.Add(this.BTN_RemoveAll);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(876, 500);
+            this.tabPage1.Size = new System.Drawing.Size(746, 450);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Single Pak";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.TV_BatchFiles);
+            this.tabPage2.Controls.Add(this.CKB_FolderPak);
+            this.tabPage2.Controls.Add(this.CKB_AsPatch);
+            this.tabPage2.Controls.Add(this.BTN_BatchRemove);
+            this.tabPage2.Controls.Add(this.BTN_BatchCreatePaks);
+            this.tabPage2.Controls.Add(this.BTN_BatchRemoveAll);
+            this.tabPage2.Controls.Add(this.BTN_BrowseBatchOutputDir);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.TB_BatchOutputDir);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(876, 487);
+            this.tabPage2.Size = new System.Drawing.Size(746, 450);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Batch Mode";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // TV_BatchFiles
+            // 
+            this.TV_BatchFiles.AllowDrop = true;
+            this.TV_BatchFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TV_BatchFiles.Location = new System.Drawing.Point(6, 33);
+            this.TV_BatchFiles.Name = "TV_BatchFiles";
+            this.TV_BatchFiles.Size = new System.Drawing.Size(629, 411);
+            this.TV_BatchFiles.TabIndex = 14;
+            this.TT_ToolTip.SetToolTip(this.TV_BatchFiles, "Pack each batch into individual pak files. Supports drag-n-drop.");
+            this.TV_BatchFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.TV_BatchFiles_DragDrop);
+            this.TV_BatchFiles.DragEnter += new System.Windows.Forms.DragEventHandler(this.TV_BatchFiles_DragEnter);
+            this.TV_BatchFiles.DragOver += new System.Windows.Forms.DragEventHandler(this.TV_BatchFiles_DragOver);
+            // 
+            // CKB_FolderPak
+            // 
+            this.CKB_FolderPak.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_FolderPak.AutoSize = true;
+            this.CKB_FolderPak.Checked = global::UnrealPakGUI.Properties.Settings.Default.bFolderPak;
+            this.CKB_FolderPak.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bFolderPak", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_FolderPak.Location = new System.Drawing.Point(649, 183);
+            this.CKB_FolderPak.Name = "CKB_FolderPak";
+            this.CKB_FolderPak.Size = new System.Drawing.Size(84, 16);
+            this.CKB_FolderPak.TabIndex = 19;
+            this.CKB_FolderPak.Text = "Folder Pak";
+            this.TT_ToolTip.SetToolTip(this.CKB_FolderPak, "When drag-n-drop, each folder gets packed into its own pak.");
+            this.CKB_FolderPak.UseVisualStyleBackColor = true;
+            // 
+            // CKB_AsPatch
+            // 
+            this.CKB_AsPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_AsPatch.AutoSize = true;
+            this.CKB_AsPatch.Checked = global::UnrealPakGUI.Properties.Settings.Default.bAsPatch;
+            this.CKB_AsPatch.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bAsPatch", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_AsPatch.Location = new System.Drawing.Point(649, 159);
+            this.CKB_AsPatch.Name = "CKB_AsPatch";
+            this.CKB_AsPatch.Size = new System.Drawing.Size(72, 16);
+            this.CKB_AsPatch.TabIndex = 18;
+            this.CKB_AsPatch.Text = "As Patch";
+            this.TT_ToolTip.SetToolTip(this.CKB_AsPatch, "Append \"_p\" to pak filename.");
+            this.CKB_AsPatch.UseVisualStyleBackColor = true;
+            // 
+            // BTN_BatchRemove
+            // 
+            this.BTN_BatchRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTN_BatchRemove.Location = new System.Drawing.Point(646, 33);
+            this.BTN_BatchRemove.Name = "BTN_BatchRemove";
+            this.BTN_BatchRemove.Size = new System.Drawing.Size(90, 30);
+            this.BTN_BatchRemove.TabIndex = 15;
+            this.BTN_BatchRemove.Text = "Remove";
+            this.TT_ToolTip.SetToolTip(this.BTN_BatchRemove, "Remove selected files.");
+            this.BTN_BatchRemove.UseVisualStyleBackColor = true;
+            this.BTN_BatchRemove.Click += new System.EventHandler(this.BTN_BatchRemove_Click);
+            // 
+            // BTN_BatchCreatePaks
+            // 
+            this.BTN_BatchCreatePaks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTN_BatchCreatePaks.Location = new System.Drawing.Point(646, 113);
+            this.BTN_BatchCreatePaks.Name = "BTN_BatchCreatePaks";
+            this.BTN_BatchCreatePaks.Size = new System.Drawing.Size(90, 30);
+            this.BTN_BatchCreatePaks.TabIndex = 17;
+            this.BTN_BatchCreatePaks.Text = "Create Paks";
+            this.TT_ToolTip.SetToolTip(this.BTN_BatchCreatePaks, "Start batch packing!");
+            this.BTN_BatchCreatePaks.UseVisualStyleBackColor = true;
+            this.BTN_BatchCreatePaks.Click += new System.EventHandler(this.BTN_BatchCreatePaks_Click);
+            // 
+            // BTN_BatchRemoveAll
+            // 
+            this.BTN_BatchRemoveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTN_BatchRemoveAll.Location = new System.Drawing.Point(646, 73);
+            this.BTN_BatchRemoveAll.Name = "BTN_BatchRemoveAll";
+            this.BTN_BatchRemoveAll.Size = new System.Drawing.Size(90, 30);
+            this.BTN_BatchRemoveAll.TabIndex = 16;
+            this.BTN_BatchRemoveAll.Text = "Remove All";
+            this.TT_ToolTip.SetToolTip(this.BTN_BatchRemoveAll, "Remove all files.");
+            this.BTN_BatchRemoveAll.UseVisualStyleBackColor = true;
+            this.BTN_BatchRemoveAll.Click += new System.EventHandler(this.BTN_BatchRemoveAll_Click);
+            // 
+            // BTN_BrowseBatchOutputDir
+            // 
+            this.BTN_BrowseBatchOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTN_BrowseBatchOutputDir.Location = new System.Drawing.Point(708, 5);
+            this.BTN_BrowseBatchOutputDir.Name = "BTN_BrowseBatchOutputDir";
+            this.BTN_BrowseBatchOutputDir.Size = new System.Drawing.Size(32, 23);
+            this.BTN_BrowseBatchOutputDir.TabIndex = 13;
+            this.BTN_BrowseBatchOutputDir.Text = "...";
+            this.TT_ToolTip.SetToolTip(this.BTN_BrowseBatchOutputDir, "Browse output directory.");
+            this.BTN_BrowseBatchOutputDir.UseVisualStyleBackColor = true;
+            this.BTN_BrowseBatchOutputDir.Click += new System.EventHandler(this.BTN_BrowseBatchOutputDir_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Output Dir";
+            // 
+            // TB_BatchOutputDir
+            // 
+            this.TB_BatchOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_BatchOutputDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "BatchOutputDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_BatchOutputDir.Location = new System.Drawing.Point(77, 6);
+            this.TB_BatchOutputDir.Name = "TB_BatchOutputDir";
+            this.TB_BatchOutputDir.ReadOnly = true;
+            this.TB_BatchOutputDir.Size = new System.Drawing.Size(625, 21);
+            this.TB_BatchOutputDir.TabIndex = 12;
+            this.TB_BatchOutputDir.Text = global::UnrealPakGUI.Properties.Settings.Default.BatchOutputDir;
+            this.TT_ToolTip.SetToolTip(this.TB_BatchOutputDir, "Directory to save pak files.");
+            // 
+            // TT_ToolTip
+            // 
+            this.TT_ToolTip.AutomaticDelay = 0;
+            this.TT_ToolTip.AutoPopDelay = 30000;
+            this.TT_ToolTip.InitialDelay = 100;
+            this.TT_ToolTip.ReshowDelay = 0;
+            this.TT_ToolTip.UseAnimation = false;
+            this.TT_ToolTip.UseFading = false;
+            // 
+            // CKB_ContentOnly
+            // 
+            this.CKB_ContentOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_ContentOnly.AutoSize = true;
+            this.CKB_ContentOnly.Checked = global::UnrealPakGUI.Properties.Settings.Default.bContentOnly;
+            this.CKB_ContentOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CKB_ContentOnly.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bContentOnly", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_ContentOnly.Location = new System.Drawing.Point(521, 96);
+            this.CKB_ContentOnly.Name = "CKB_ContentOnly";
+            this.CKB_ContentOnly.Size = new System.Drawing.Size(132, 16);
+            this.CKB_ContentOnly.TabIndex = 6;
+            this.CKB_ContentOnly.Text = "Content Files Only";
+            this.TT_ToolTip.SetToolTip(this.CKB_ContentOnly, resources.GetString("CKB_ContentOnly.ToolTip"));
+            this.CKB_ContentOnly.UseVisualStyleBackColor = true;
+            // 
+            // TB_ProjectFile
+            // 
+            this.TB_ProjectFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_ProjectFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "ProjectFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_ProjectFile.Location = new System.Drawing.Point(107, 66);
+            this.TB_ProjectFile.Name = "TB_ProjectFile";
+            this.TB_ProjectFile.ReadOnly = true;
+            this.TB_ProjectFile.Size = new System.Drawing.Size(621, 21);
+            this.TB_ProjectFile.TabIndex = 4;
+            this.TB_ProjectFile.Text = global::UnrealPakGUI.Properties.Settings.Default.ProjectFile;
+            this.TT_ToolTip.SetToolTip(this.TB_ProjectFile, "Path to uproject file");
+            // 
+            // TB_CryptoFile
+            // 
+            this.TB_CryptoFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_CryptoFile.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "CryptoFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_CryptoFile.Location = new System.Drawing.Point(107, 39);
+            this.TB_CryptoFile.Name = "TB_CryptoFile";
+            this.TB_CryptoFile.ReadOnly = true;
+            this.TB_CryptoFile.Size = new System.Drawing.Size(621, 21);
+            this.TB_CryptoFile.TabIndex = 2;
+            this.TB_CryptoFile.Text = global::UnrealPakGUI.Properties.Settings.Default.CryptoFile;
+            this.TT_ToolTip.SetToolTip(this.TB_CryptoFile, "Path to Crypto.json file");
+            // 
+            // TB_EngineDir
+            // 
+            this.TB_EngineDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_EngineDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "EngineDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_EngineDir.Location = new System.Drawing.Point(107, 12);
+            this.TB_EngineDir.Name = "TB_EngineDir";
+            this.TB_EngineDir.ReadOnly = true;
+            this.TB_EngineDir.Size = new System.Drawing.Size(621, 21);
+            this.TB_EngineDir.TabIndex = 0;
+            this.TB_EngineDir.Text = global::UnrealPakGUI.Properties.Settings.Default.EngineDir;
+            this.TT_ToolTip.SetToolTip(this.TB_EngineDir, "Unreal Engine root directory");
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(908, 642);
+            this.ClientSize = new System.Drawing.Size(778, 584);
+            this.Controls.Add(this.CKB_ContentOnly);
             this.Controls.Add(this.CKB_Encryption);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label4);
@@ -320,6 +465,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -333,7 +480,7 @@
         private System.Windows.Forms.Button BTN_BrowseCryptoFile;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.OpenFileDialog OFD_BrowseCryptoFile;
-        private System.Windows.Forms.FolderBrowserDialog FBD_BrowseEngineDir;
+        private System.Windows.Forms.FolderBrowserDialog FBD_BrowseDir;
         private System.Windows.Forms.OpenFileDialog OFD_BrowseOutputFile;
         private System.Windows.Forms.ListBox LB_FilesToPak;
         private System.Windows.Forms.TextBox TB_ProjectFile;
@@ -342,15 +489,23 @@
         private System.Windows.Forms.OpenFileDialog OFD_BrowseProjectFile;
         private System.Windows.Forms.CheckBox CKB_Encryption;
         private System.Windows.Forms.Button BTN_RemoveItems;
-        private System.Windows.Forms.Button BTN_AddFiles;
-        private System.Windows.Forms.Button BTN_AddDir;
         private System.Windows.Forms.Button BTN_CreatePak;
         private System.Windows.Forms.OpenFileDialog OFD_AddFiles;
-        private System.Windows.Forms.FolderBrowserDialog FBD_AddDir;
         private System.Windows.Forms.Button BTN_RemoveAll;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TreeView TV_BatchFiles;
+        private System.Windows.Forms.Button BTN_BatchRemove;
+        private System.Windows.Forms.Button BTN_BatchCreatePaks;
+        private System.Windows.Forms.Button BTN_BatchRemoveAll;
+        private System.Windows.Forms.TextBox TB_BatchOutputDir;
+        private System.Windows.Forms.Button BTN_BrowseBatchOutputDir;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox CKB_ContentOnly;
+        private System.Windows.Forms.ToolTip TT_ToolTip;
+        private System.Windows.Forms.CheckBox CKB_AsPatch;
+        private System.Windows.Forms.CheckBox CKB_FolderPak;
     }
 }
 

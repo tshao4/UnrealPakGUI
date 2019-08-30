@@ -117,22 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="OFD_BrowseCryptoFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>185, 8</value>
+  <metadata name="TT_ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>783, 9</value>
   </metadata>
-  <metadata name="FBD_BrowseEngineDir.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="OFD_BrowseCryptoFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>145, 8</value>
+  </metadata>
+  <metadata name="FBD_BrowseDir.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>18, 8</value>
   </metadata>
   <metadata name="OFD_BrowseOutputFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>530, 9</value>
+    <value>490, 9</value>
+  </metadata>
+  <metadata name="TT_ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>783, 9</value>
   </metadata>
   <metadata name="OFD_BrowseProjectFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>357, 9</value>
+    <value>317, 9</value>
   </metadata>
   <metadata name="OFD_AddFiles.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>704, 9</value>
+    <value>664, 9</value>
   </metadata>
-  <metadata name="FBD_AddDir.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>837, 9</value>
-  </metadata>
+  <data name="CKB_ContentOnly.ToolTip" xml:space="preserve">
+    <value>If checked, only files under "Content" and its subfolders are packed, so the pak mount point will be set to "../../../&lt;ProjectName&gt;/Content/*". Otherwise mount point is set to the common root directory of the input files.</value>
+  </data>
 </root>
