@@ -47,7 +47,21 @@ namespace UnrealPakGUI
 
         public PakBatch(string[] InFileNames)
         {
-            FilesPrivate = new List<string>(InFileNames);
+            FilesPrivate = new List<string>();
+            foreach (string FileName in InFileNames)
+            {
+                if (Directory.Exists(FileName))
+                {
+                    foreach (string SubFileName in Directory.EnumerateFiles(FileName, "*.*", SearchOption.AllDirectories))
+                    {
+                        FilesPrivate.Add(SubFileName);
+                    }
+                }
+                else
+                {
+                    FilesPrivate.Add(FileName);
+                }
+            }
             CommonPath = GetCommonRootPath(InFileNames);
         }
 

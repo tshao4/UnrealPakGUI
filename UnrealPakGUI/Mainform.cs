@@ -244,7 +244,7 @@ namespace UnrealPakGUI
                 {
                     if (IsDirectory(FileName))
                     {
-                        PakBatch Batch = new PakBatch(Directory.EnumerateFiles(FileName, "*.*", SearchOption.AllDirectories).ToArray());
+                        PakBatch Batch = new PakBatch(new string[] { FileName });
                         TreeNode Node = new TreeNode(Batch.BatchNodeText);
                         Node.Tag = Batch;
                         foreach (string SubDirFileName in Batch.Files)
@@ -272,19 +272,9 @@ namespace UnrealPakGUI
                 PakBatch Batch = new PakBatch(FileNames);
                 TreeNode Node = new TreeNode(Batch.BatchNodeText);
                 Node.Tag = Batch;
-                foreach (string FileName in FileNames)
+                foreach (string FileName in Batch.Files)
                 {
-                    if (IsDirectory(FileName))
-                    {
-                        foreach (string SubDirFileName in Directory.EnumerateFiles(FileName, "*.*", SearchOption.AllDirectories))
-                        {
-                            Node.Nodes.Add(new TreeNode(SubDirFileName.Substring(Batch.CommonPath.Length)));
-                        }
-                    }
-                    else
-                    {
-                        Node.Nodes.Add(new TreeNode(FileName.Substring(Batch.CommonPath.Length)));
-                    }
+                    Node.Nodes.Add(new TreeNode(FileName.Substring(Batch.CommonPath.Length)));
                 }
                 TV_BatchFiles.Nodes.Add(Node);
                 TV_BatchFiles.CollapseAll();
