@@ -22,6 +22,7 @@ namespace UnrealPakGUI
         string ProjectFilePath;
         string BatchOutputPath;
         bool bContentOnly = false;
+        bool bCompression = false;
         bool bEncryption = false;
         bool bAsPatch = false;
         bool bBatchMode = false;
@@ -290,6 +291,7 @@ namespace UnrealPakGUI
             Properties.Settings.Default["ProjectFile"] = TB_ProjectFile.Text;
             Properties.Settings.Default["BatchOutputDir"] = TB_BatchOutputDir.Text;
             Properties.Settings.Default["bContentOnly"] = CKB_ContentOnly.Checked;
+            Properties.Settings.Default["bUseCompression"] = CKB_Compression.Checked;
             Properties.Settings.Default["bUseEncryption"] = CKB_Encryption.Checked;
             Properties.Settings.Default["bAsPatch"] = CKB_AsPatch.Checked;
             Properties.Settings.Default["bFolderPak"] = CKB_FolderPak.Checked;
@@ -326,6 +328,7 @@ namespace UnrealPakGUI
             ProjectFilePath = TB_ProjectFile.Text;
             BatchOutputPath = TB_BatchOutputDir.Text;
             bContentOnly = CKB_ContentOnly.Checked;
+            bCompression = CKB_Compression.Checked;
             bEncryption = CKB_Encryption.Checked;
             bAsPatch = CKB_AsPatch.Checked;
         }

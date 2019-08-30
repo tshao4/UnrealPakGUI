@@ -118,5 +118,17 @@ namespace UnrealPakGUI.Properties {
                 this["bFolderPak"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bUseCompression {
+            get {
+                return ((bool)(this["bUseCompression"]));
+            }
+            set {
+                this["bUseCompression"] = value;
+            }
+        }
     }
 }
