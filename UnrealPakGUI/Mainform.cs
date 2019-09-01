@@ -365,6 +365,11 @@ namespace UnrealPakGUI
                 Args.Add("-encryptindex");
             }
 
+            if (bCompression)
+            {
+                Args.Add("-compress");
+            }
+
             Args.Add("-patchpaddingalign=2048");
             Args.Add($"-compressionformats={ProjectFilePath}");
             Args.Add("-multiprocess");
