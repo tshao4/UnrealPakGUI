@@ -67,7 +67,11 @@ namespace UnrealPakGUI
 
         public static string GetCommonRootPath(string[] FileNames)
         {
-            string Root = GetLogestPath(FileNames).Normalize();
+            if (FileNames.Length == 1 && Directory.Exists(FileNames[0]))
+            {
+                return FileNames[0];
+            }
+            string Root = GetLongestPath(FileNames).Normalize();
             for (int FileIndex = 0; FileIndex < FileNames.Length && Root.Length > 0; FileIndex++)
             {
                 string FileName = FileNames[FileIndex];
@@ -98,7 +102,7 @@ namespace UnrealPakGUI
             return Root.Normalize();
         }
 
-        public static string GetLogestPath(string[] FileNames)
+        public static string GetLongestPath(string[] FileNames)
         {
             string LongestPath = string.Empty;
             int MaxNumDirectories = 0;
