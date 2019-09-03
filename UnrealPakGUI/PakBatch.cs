@@ -38,7 +38,7 @@ namespace UnrealPakGUI
                 }
                 else
                 {
-                    OutputPathPrivate = value + Path.GetFileNameWithoutExtension(Path.GetDirectoryName(CommonPath)) + ".pak";
+                    OutputPathPrivate = Path.Combine(value, Path.GetFileName(CommonPath) + ".pak");
                 }
             }
         }
