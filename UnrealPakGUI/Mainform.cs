@@ -21,6 +21,7 @@ namespace UnrealPakGUI
         string CryptoFilePath;
         string ProjectFilePath;
         string BatchOutputPath;
+        string ExtractToPath;
         bool bContentOnly = false;
         bool bCompression = false;
         bool bEncryption = false;
@@ -33,13 +34,17 @@ namespace UnrealPakGUI
         {
             InitializeComponent();
             Logs = new FormLogs();
+            ApplyConfigs();
         }
+
+        #region Buttons Click
 
         private void BTN_BrowseEngineDir_Click(object sender, EventArgs e)
         {
             if (DialogResult.OK == FBD_BrowseDir.ShowDialog())
             {
                 TB_EngineDir.Text = FBD_BrowseDir.SelectedPath;
+                SaveConfig("EngineDir", TB_EngineDir.Text);
             }
         }
 
@@ -48,6 +53,7 @@ namespace UnrealPakGUI
             if (DialogResult.OK == OFD_BrowseCryptoFile.ShowDialog())
             {
                 TB_CryptoFile.Text = OFD_BrowseCryptoFile.FileName;
+                SaveConfig("CryptoFile", TB_CryptoFile.Text);
             }
         }
 
@@ -56,6 +62,7 @@ namespace UnrealPakGUI
             if (DialogResult.OK == OFD_BrowseProjectFile.ShowDialog())
             {
                 TB_ProjectFile.Text = OFD_BrowseProjectFile.FileName;
+                SaveConfig("ProjectFile", TB_ProjectFile.Text);
             }
         }
 
@@ -84,7 +91,13 @@ namespace UnrealPakGUI
             {
                 return;
             }
-            
+
+            if (!File.Exists(ProjectFilePath))
+            {
+                MessageBox.Show("Project File does not exist!", "Missing Project File");
+                return;
+            }
+
             if (LB_FilesToPak.Items.Count == 0)
             {
                 MessageBox.Show("Nothing to Pak!", "Nothing to Pak");
@@ -109,6 +122,7 @@ namespace UnrealPakGUI
             if (DialogResult.OK == FBD_BrowseDir.ShowDialog())
             {
                 TB_BatchOutputDir.Text = FBD_BrowseDir.SelectedPath;
+                SaveConfig("BatchOutputDir", TB_BatchOutputDir.Text);
             }
         }
 
@@ -135,7 +149,13 @@ namespace UnrealPakGUI
             {
                 return;
             }
-            
+
+            if (!File.Exists(ProjectFilePath))
+            {
+                MessageBox.Show("Project File does not exist!", "Missing Project File");
+                return;
+            }
+
             if (TV_BatchFiles.Nodes.Count == 0)
             {
                 MessageBox.Show("Nothing to Pak!", "Nothing to Pak");
@@ -163,6 +183,50 @@ namespace UnrealPakGUI
                 CreateSinglePak(Batch);
             }
         }
+
+        private void BTN_BrowseExtractToDir_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == FBD_BrowseDir.ShowDialog())
+            {
+                TB_ExtractToDir.Text = FBD_BrowseDir.SelectedPath;
+                SaveConfig("ExtractToDir", TB_ExtractToDir.Text);
+            }
+        }
+
+        #endregion Buttons Click
+
+        #region Checkboxes CheckedChanged
+
+        private void CKB_ContentOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveConfig("bContentOnly", CKB_ContentOnly.Checked);
+        }
+
+        private void CKB_Compression_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveConfig("bUseCompression", CKB_Compression.Checked);
+        }
+
+        private void CKB_Encryption_CheckedChanged(object sender, EventArgs e)
+        {
+            SaveConfig("bUseEncryption", CKB_Encryption.Checked);
+        }
+
+        private void CKB_AsPatch_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["bAsPatch"] = CKB_AsPatch.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void CKB_FolderPak_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["bFolderPak"] = CKB_FolderPak.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion Checkboxes CheckedChanged
+
+        #region List & Tree DragDrop
 
         private void LB_FilesToPak_DragEnter(object sender, DragEventArgs e)
         {
@@ -284,19 +348,9 @@ namespace UnrealPakGUI
             TV_BatchFiles.EndUpdate();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Properties.Settings.Default["EngineDir"] = TB_EngineDir.Text;
-            Properties.Settings.Default["CryptoFile"] = TB_CryptoFile.Text;
-            Properties.Settings.Default["ProjectFile"] = TB_ProjectFile.Text;
-            Properties.Settings.Default["BatchOutputDir"] = TB_BatchOutputDir.Text;
-            Properties.Settings.Default["bContentOnly"] = CKB_ContentOnly.Checked;
-            Properties.Settings.Default["bUseCompression"] = CKB_Compression.Checked;
-            Properties.Settings.Default["bUseEncryption"] = CKB_Encryption.Checked;
-            Properties.Settings.Default["bAsPatch"] = CKB_AsPatch.Checked;
-            Properties.Settings.Default["bFolderPak"] = CKB_FolderPak.Checked;
-            Properties.Settings.Default.Save();
-        }
+        #endregion List & Tree DragDrop
+
+        #region Configs
 
         private bool ValidateConfigs()
         {
@@ -312,12 +366,6 @@ namespace UnrealPakGUI
                 return false;
             }
 
-            if (!File.Exists(ProjectFilePath))
-            {
-                MessageBox.Show("Project File does not exist!", "Missing Project File");
-                return false;
-            }
-
             return true;
         }
 
@@ -327,11 +375,28 @@ namespace UnrealPakGUI
             CryptoFilePath = TB_CryptoFile.Text;
             ProjectFilePath = TB_ProjectFile.Text;
             BatchOutputPath = TB_BatchOutputDir.Text;
+            ExtractToPath = TB_ExtractToDir.Text;
             bContentOnly = CKB_ContentOnly.Checked;
             bCompression = CKB_Compression.Checked;
             bEncryption = CKB_Encryption.Checked;
             bAsPatch = CKB_AsPatch.Checked;
         }
+
+        private void SaveConfig(string Name, string Value)
+        {
+            Properties.Settings.Default[Name] = Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void SaveConfig(string Name, bool Value)
+        {
+            Properties.Settings.Default[Name] = Value;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion Configs
+
+        #region Packing
 
         private void CreateSinglePak(PakBatch Batch)
         {
@@ -374,12 +439,9 @@ namespace UnrealPakGUI
             Args.Add($"-compressionformats={ProjectFilePath}");
             Args.Add("-multiprocess");
             
-            RunUnrealPak(Args.ToArray());
-        }
-
-        private bool IsDirectory(string FileName)
-        {
-            return Directory.Exists(FileName);
+            Thread Worker = new Thread(() => RunUnrealPakWorker(Args.ToArray()));
+            Worker.IsBackground = true;
+            Worker.Start();
         }
 
         private string CreateResponseFile(PakBatch Batch)
@@ -443,14 +505,7 @@ namespace UnrealPakGUI
 
             return Path.GetFullPath(ResponseFilePath);
         }
-
-        private void RunUnrealPak(string[] Args)
-        {
-            Thread Worker = new Thread(() => RunUnrealPakWorker(Args));
-            Worker.IsBackground = true;
-            Worker.Start();
-        }
-
+        
         private void RunUnrealPakWorker(string[] Args)
         {
             string CombinedArgs = string.Empty;
@@ -487,6 +542,23 @@ namespace UnrealPakGUI
             }
         }
 
+        private bool IsDirectory(string FileName)
+        {
+            return Directory.Exists(FileName);
+        }
+
+        #endregion Packing
+
+        #region Logging
+
+        private void OnOutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                ShowLog(e.Data);
+            }
+        }
+
         private void ReportPakCreated(string PakName)
         {
             if (this.InvokeRequired)
@@ -503,14 +575,6 @@ namespace UnrealPakGUI
                 {
                     ShowLog("////////////////////// DONE BATCH PACKING ///////////////////////");
                 }
-            }
-        }
-
-        private void OnOutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-            {
-                ShowLog(e.Data);
             }
         }
 
@@ -531,5 +595,7 @@ namespace UnrealPakGUI
                 Logs.ShowLog(Line);
             }
         }
+
+        #endregion Logging
     }
 }

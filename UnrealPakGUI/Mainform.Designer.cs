@@ -44,7 +44,6 @@
             this.BTN_RemoveItems = new System.Windows.Forms.Button();
             this.BTN_CreatePak = new System.Windows.Forms.Button();
             this.OFD_AddFiles = new System.Windows.Forms.OpenFileDialog();
-            this.CKB_Encryption = new System.Windows.Forms.CheckBox();
             this.BTN_RemoveAll = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -55,20 +54,21 @@
             this.BTN_BatchRemoveAll = new System.Windows.Forms.Button();
             this.BTN_BrowseBatchOutputDir = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.CKB_FolderPak = new System.Windows.Forms.CheckBox();
-            this.CKB_AsPatch = new System.Windows.Forms.CheckBox();
-            this.TB_BatchOutputDir = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.BTN_BrowseExtractToDir = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.TB_ExtractToDir = new System.Windows.Forms.TextBox();
             this.TV_ListPak = new System.Windows.Forms.TreeView();
             this.TT_ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.CKB_ContentOnly = new System.Windows.Forms.CheckBox();
+            this.CKB_Compression = new System.Windows.Forms.CheckBox();
+            this.CKB_Encryption = new System.Windows.Forms.CheckBox();
+            this.CKB_FolderPak = new System.Windows.Forms.CheckBox();
+            this.CKB_AsPatch = new System.Windows.Forms.CheckBox();
+            this.TB_BatchOutputDir = new System.Windows.Forms.TextBox();
+            this.TB_ExtractToDir = new System.Windows.Forms.TextBox();
             this.TB_ProjectFile = new System.Windows.Forms.TextBox();
             this.TB_CryptoFile = new System.Windows.Forms.TextBox();
             this.TB_EngineDir = new System.Windows.Forms.TextBox();
-            this.CKB_Compression = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -199,20 +199,6 @@
             // OFD_AddFiles
             // 
             this.OFD_AddFiles.Multiselect = true;
-            // 
-            // CKB_Encryption
-            // 
-            this.CKB_Encryption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CKB_Encryption.AutoSize = true;
-            this.CKB_Encryption.Checked = true;
-            this.CKB_Encryption.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CKB_Encryption.Location = new System.Drawing.Point(677, 96);
-            this.CKB_Encryption.Name = "CKB_Encryption";
-            this.CKB_Encryption.Size = new System.Drawing.Size(84, 16);
-            this.CKB_Encryption.TabIndex = 7;
-            this.CKB_Encryption.Text = "Encryption";
-            this.TT_ToolTip.SetToolTip(this.CKB_Encryption, "Encrypt pak file. A valid Crypto file is nessessary.");
-            this.CKB_Encryption.UseVisualStyleBackColor = true;
             // 
             // BTN_RemoveAll
             // 
@@ -345,47 +331,6 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Output Dir";
             // 
-            // CKB_FolderPak
-            // 
-            this.CKB_FolderPak.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CKB_FolderPak.AutoSize = true;
-            this.CKB_FolderPak.Checked = global::UnrealPakGUI.Properties.Settings.Default.bFolderPak;
-            this.CKB_FolderPak.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bFolderPak", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.CKB_FolderPak.Location = new System.Drawing.Point(645, 70);
-            this.CKB_FolderPak.Name = "CKB_FolderPak";
-            this.CKB_FolderPak.Size = new System.Drawing.Size(84, 16);
-            this.CKB_FolderPak.TabIndex = 19;
-            this.CKB_FolderPak.Text = "Folder Pak";
-            this.TT_ToolTip.SetToolTip(this.CKB_FolderPak, "When drag-n-drop, each folder gets packed into its own pak.");
-            this.CKB_FolderPak.UseVisualStyleBackColor = true;
-            // 
-            // CKB_AsPatch
-            // 
-            this.CKB_AsPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CKB_AsPatch.AutoSize = true;
-            this.CKB_AsPatch.Checked = global::UnrealPakGUI.Properties.Settings.Default.bAsPatch;
-            this.CKB_AsPatch.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bAsPatch", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.CKB_AsPatch.Location = new System.Drawing.Point(645, 46);
-            this.CKB_AsPatch.Name = "CKB_AsPatch";
-            this.CKB_AsPatch.Size = new System.Drawing.Size(72, 16);
-            this.CKB_AsPatch.TabIndex = 18;
-            this.CKB_AsPatch.Text = "As Patch";
-            this.TT_ToolTip.SetToolTip(this.CKB_AsPatch, "Append \"_p\" to pak filename.");
-            this.CKB_AsPatch.UseVisualStyleBackColor = true;
-            // 
-            // TB_BatchOutputDir
-            // 
-            this.TB_BatchOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_BatchOutputDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "BatchOutputDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TB_BatchOutputDir.Location = new System.Drawing.Point(77, 7);
-            this.TB_BatchOutputDir.Name = "TB_BatchOutputDir";
-            this.TB_BatchOutputDir.ReadOnly = true;
-            this.TB_BatchOutputDir.Size = new System.Drawing.Size(625, 21);
-            this.TB_BatchOutputDir.TabIndex = 12;
-            this.TB_BatchOutputDir.Text = global::UnrealPakGUI.Properties.Settings.Default.BatchOutputDir;
-            this.TT_ToolTip.SetToolTip(this.TB_BatchOutputDir, "Directory to save pak files.");
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.BTN_BrowseExtractToDir);
@@ -410,6 +355,7 @@
             this.BTN_BrowseExtractToDir.Text = "...";
             this.TT_ToolTip.SetToolTip(this.BTN_BrowseExtractToDir, "Browse extract directory.");
             this.BTN_BrowseExtractToDir.UseVisualStyleBackColor = true;
+            this.BTN_BrowseExtractToDir.Click += new System.EventHandler(this.BTN_BrowseExtractToDir_Click);
             // 
             // label5
             // 
@@ -419,19 +365,6 @@
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 14;
             this.label5.Text = "Extract To";
-            // 
-            // TB_ExtractToDir
-            // 
-            this.TB_ExtractToDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TB_ExtractToDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "BatchOutputDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TB_ExtractToDir.Location = new System.Drawing.Point(77, 7);
-            this.TB_ExtractToDir.Name = "TB_ExtractToDir";
-            this.TB_ExtractToDir.ReadOnly = true;
-            this.TB_ExtractToDir.Size = new System.Drawing.Size(625, 21);
-            this.TB_ExtractToDir.TabIndex = 15;
-            this.TB_ExtractToDir.Text = global::UnrealPakGUI.Properties.Settings.Default.BatchOutputDir;
-            this.TT_ToolTip.SetToolTip(this.TB_ExtractToDir, "Directory to extract pak contet to.");
             // 
             // TV_ListPak
             // 
@@ -467,6 +400,94 @@
             this.CKB_ContentOnly.Text = "Content Files Only";
             this.TT_ToolTip.SetToolTip(this.CKB_ContentOnly, resources.GetString("CKB_ContentOnly.ToolTip"));
             this.CKB_ContentOnly.UseVisualStyleBackColor = true;
+            this.CKB_ContentOnly.CheckedChanged += new System.EventHandler(this.CKB_ContentOnly_CheckedChanged);
+            // 
+            // CKB_Compression
+            // 
+            this.CKB_Compression.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_Compression.AutoSize = true;
+            this.CKB_Compression.Checked = global::UnrealPakGUI.Properties.Settings.Default.bUseCompression;
+            this.CKB_Compression.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CKB_Compression.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bUseCompression", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_Compression.Location = new System.Drawing.Point(575, 96);
+            this.CKB_Compression.Name = "CKB_Compression";
+            this.CKB_Compression.Size = new System.Drawing.Size(90, 16);
+            this.CKB_Compression.TabIndex = 7;
+            this.CKB_Compression.Text = "Compression";
+            this.CKB_Compression.UseVisualStyleBackColor = true;
+            this.CKB_Compression.CheckedChanged += new System.EventHandler(this.CKB_Compression_CheckedChanged);
+            // 
+            // CKB_Encryption
+            // 
+            this.CKB_Encryption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_Encryption.AutoSize = true;
+            this.CKB_Encryption.Checked = global::UnrealPakGUI.Properties.Settings.Default.bUseEncryption;
+            this.CKB_Encryption.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CKB_Encryption.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bUseEncryption", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_Encryption.Location = new System.Drawing.Point(677, 96);
+            this.CKB_Encryption.Name = "CKB_Encryption";
+            this.CKB_Encryption.Size = new System.Drawing.Size(84, 16);
+            this.CKB_Encryption.TabIndex = 7;
+            this.CKB_Encryption.Text = "Encryption";
+            this.TT_ToolTip.SetToolTip(this.CKB_Encryption, "Encrypt pak file. A valid Crypto file is nessessary.");
+            this.CKB_Encryption.UseVisualStyleBackColor = true;
+            this.CKB_Encryption.CheckedChanged += new System.EventHandler(this.CKB_Encryption_CheckedChanged);
+            // 
+            // CKB_FolderPak
+            // 
+            this.CKB_FolderPak.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_FolderPak.AutoSize = true;
+            this.CKB_FolderPak.Checked = global::UnrealPakGUI.Properties.Settings.Default.bFolderPak;
+            this.CKB_FolderPak.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bFolderPak", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_FolderPak.Location = new System.Drawing.Point(645, 70);
+            this.CKB_FolderPak.Name = "CKB_FolderPak";
+            this.CKB_FolderPak.Size = new System.Drawing.Size(84, 16);
+            this.CKB_FolderPak.TabIndex = 19;
+            this.CKB_FolderPak.Text = "Folder Pak";
+            this.TT_ToolTip.SetToolTip(this.CKB_FolderPak, "When drag-n-drop, each folder gets packed into its own pak.");
+            this.CKB_FolderPak.UseVisualStyleBackColor = true;
+            this.CKB_FolderPak.CheckedChanged += new System.EventHandler(this.CKB_FolderPak_CheckedChanged);
+            // 
+            // CKB_AsPatch
+            // 
+            this.CKB_AsPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CKB_AsPatch.AutoSize = true;
+            this.CKB_AsPatch.Checked = global::UnrealPakGUI.Properties.Settings.Default.bAsPatch;
+            this.CKB_AsPatch.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bAsPatch", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.CKB_AsPatch.Location = new System.Drawing.Point(645, 46);
+            this.CKB_AsPatch.Name = "CKB_AsPatch";
+            this.CKB_AsPatch.Size = new System.Drawing.Size(72, 16);
+            this.CKB_AsPatch.TabIndex = 18;
+            this.CKB_AsPatch.Text = "As Patch";
+            this.TT_ToolTip.SetToolTip(this.CKB_AsPatch, "Append \"_p\" to pak filename.");
+            this.CKB_AsPatch.UseVisualStyleBackColor = true;
+            this.CKB_AsPatch.CheckedChanged += new System.EventHandler(this.CKB_AsPatch_CheckedChanged);
+            // 
+            // TB_BatchOutputDir
+            // 
+            this.TB_BatchOutputDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_BatchOutputDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "BatchOutputDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_BatchOutputDir.Location = new System.Drawing.Point(77, 7);
+            this.TB_BatchOutputDir.Name = "TB_BatchOutputDir";
+            this.TB_BatchOutputDir.ReadOnly = true;
+            this.TB_BatchOutputDir.Size = new System.Drawing.Size(625, 21);
+            this.TB_BatchOutputDir.TabIndex = 12;
+            this.TB_BatchOutputDir.Text = global::UnrealPakGUI.Properties.Settings.Default.BatchOutputDir;
+            this.TT_ToolTip.SetToolTip(this.TB_BatchOutputDir, "Directory to save pak files.");
+            // 
+            // TB_ExtractToDir
+            // 
+            this.TB_ExtractToDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TB_ExtractToDir.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::UnrealPakGUI.Properties.Settings.Default, "ExtractToDir", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.TB_ExtractToDir.Location = new System.Drawing.Point(77, 7);
+            this.TB_ExtractToDir.Name = "TB_ExtractToDir";
+            this.TB_ExtractToDir.ReadOnly = true;
+            this.TB_ExtractToDir.Size = new System.Drawing.Size(625, 21);
+            this.TB_ExtractToDir.TabIndex = 15;
+            this.TB_ExtractToDir.Text = global::UnrealPakGUI.Properties.Settings.Default.ExtractToDir;
+            this.TT_ToolTip.SetToolTip(this.TB_ExtractToDir, "Directory to extract pak contet to.");
             // 
             // TB_ProjectFile
             // 
@@ -507,20 +528,6 @@
             this.TB_EngineDir.Text = global::UnrealPakGUI.Properties.Settings.Default.EngineDir;
             this.TT_ToolTip.SetToolTip(this.TB_EngineDir, "Unreal Engine root directory");
             // 
-            // CKB_Compression
-            // 
-            this.CKB_Compression.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CKB_Compression.AutoSize = true;
-            this.CKB_Compression.Checked = global::UnrealPakGUI.Properties.Settings.Default.bUseCompression;
-            this.CKB_Compression.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CKB_Compression.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::UnrealPakGUI.Properties.Settings.Default, "bUseCompression", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.CKB_Compression.Location = new System.Drawing.Point(575, 96);
-            this.CKB_Compression.Name = "CKB_Compression";
-            this.CKB_Compression.Size = new System.Drawing.Size(90, 16);
-            this.CKB_Compression.TabIndex = 7;
-            this.CKB_Compression.Text = "Compression";
-            this.CKB_Compression.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -543,7 +550,6 @@
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.Text = "UnrealPakGUI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);

@@ -130,5 +130,17 @@ namespace UnrealPakGUI.Properties {
                 this["bUseCompression"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExtractToDir {
+            get {
+                return ((string)(this["ExtractToDir"]));
+            }
+            set {
+                this["ExtractToDir"] = value;
+            }
+        }
     }
 }
