@@ -26,13 +26,17 @@ namespace UnrealPakGUI
         bool bCompression = false;
         bool bEncryption = false;
         bool bAsPatch = false;
+
         bool bBatchMode = false;
         int BatchCount = 0;
         int BatchTotal = 0;
 
+        List<string> ListOutput;
+
         public MainForm()
         {
             InitializeComponent();
+            ListOutput = new List<string>();
             Logs = new FormLogs();
             ApplyConfigs();
         }
@@ -193,6 +197,11 @@ namespace UnrealPakGUI
             }
         }
 
+        private void BTN_Logs_Click(object sender, EventArgs e)
+        {
+            Logs.Show();
+        }
+
         #endregion Buttons Click
 
         #region Checkboxes CheckedChanged
@@ -240,18 +249,6 @@ namespace UnrealPakGUI
             }
         }
 
-        private void LB_FilesToPak_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-
         private void LB_FilesToPak_DragDrop(object sender, DragEventArgs e)
         {
             LB_FilesToPak.BeginUpdate();
@@ -275,18 +272,6 @@ namespace UnrealPakGUI
         }
 
         private void TV_BatchFiles_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-
-        private void TV_BatchFiles_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -348,6 +333,56 @@ namespace UnrealPakGUI
             TV_BatchFiles.EndUpdate();
         }
 
+        private void TV_ListPak_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void TV_ListPak_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] FileNames = e.Data.GetData(DataFormats.FileDrop, false) as string[];
+            if (FileNames.Length != 1)
+            {
+                MessageBox.Show("No more than one file!", "Too many files");
+                return;
+            }
+
+            string FileName = FileNames[0];
+
+            if (!File.Exists(FileName))
+            {
+                MessageBox.Show("File does not exist!", "File not found");
+                return;
+            }
+
+            if (Path.GetExtension(FileName) != ".pak")
+            {
+                MessageBox.Show("Only supports *.pak file!", "Unsupported file");
+                return;
+            }
+
+            if (!ValidateConfigs())
+            {
+                return;
+            }
+
+            ShowLog("//////////////////////// START LISTING //////////////////////////");
+            ShowLog($"Listing file {FileName}");
+            TV_ListPak.Nodes.Clear();
+            ListOutput.Clear();
+
+            Thread Worker = new Thread(() => RunListWorker(FileName));
+            Worker.IsBackground = true;
+            Worker.Start();
+        }
+
         #endregion List & Tree DragDrop
 
         #region Configs
@@ -362,7 +397,7 @@ namespace UnrealPakGUI
 
             if (bEncryption && !File.Exists(CryptoFilePath))
             {
-                MessageBox.Show("Crypto File does not exist!", "Missing Crypto File");
+                MessageBox.Show("Encryption is enabled yet Crypto File does not exist!", "Missing Crypto File");
                 return false;
             }
 
@@ -439,7 +474,7 @@ namespace UnrealPakGUI
             Args.Add($"-compressionformats={ProjectFilePath}");
             Args.Add("-multiprocess");
             
-            Thread Worker = new Thread(() => RunUnrealPakWorker(Args.ToArray()));
+            Thread Worker = new Thread(() => RunPackingWorker(Args.ToArray()));
             Worker.IsBackground = true;
             Worker.Start();
         }
@@ -506,7 +541,7 @@ namespace UnrealPakGUI
             return Path.GetFullPath(ResponseFilePath);
         }
         
-        private void RunUnrealPakWorker(string[] Args)
+        private void RunPackingWorker(string[] Args)
         {
             string CombinedArgs = string.Empty;
             foreach (string Arg in Args)
@@ -548,6 +583,82 @@ namespace UnrealPakGUI
         }
 
         #endregion Packing
+
+        #region List & Extract
+
+        private void RunListWorker(string FileName)
+        {
+            string Args = FileName + " -list";
+            if (bEncryption)
+            {
+                Args += $" -cryptokeys={CryptoFilePath}";
+            }
+            ProcessStartInfo StartInfo = new ProcessStartInfo(UnrealPakPath, Args);
+            StartInfo.CreateNoWindow = true;
+            StartInfo.RedirectStandardOutput = true;
+            StartInfo.RedirectStandardError = true;
+            StartInfo.UseShellExecute = false;
+            Process CmdProc = Process.Start(StartInfo);
+
+            CmdProc.OutputDataReceived += new DataReceivedEventHandler(OnListOutputReceived);
+            CmdProc.BeginOutputReadLine();
+
+            CmdProc.WaitForExit();
+            CmdProc.Close();
+
+            ShowLog("///////////////////////// DONE LISTING //////////////////////////");
+
+            ProcessListOutput(FileName);
+        }
+
+        private void OnListOutputReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                ShowLog(e.Data);
+                ListOutput.Add(e.Data);
+            }
+        }
+
+        private void ProcessListOutput(string FileName)
+        {
+            if (TV_ListPak.InvokeRequired)
+            {
+                PassStringDelegate Delegate = ProcessListOutput;
+                string[] Args = { FileName };
+                TV_ListPak.Invoke(Delegate, Args);
+            }
+            else
+            {
+                TV_ListPak.BeginUpdate();
+                bool bFoundMountPoint = false;
+
+                TreeNode FileNameNode = new TreeNode("File Name", new TreeNode[] { new TreeNode(FileName) });
+                TreeNode MountPointNode = new TreeNode("Mount Point");
+                TV_ListPak.Nodes.Add(FileNameNode);
+                TV_ListPak.Nodes.Add(MountPointNode);
+                
+                foreach (string Line in ListOutput)
+                {
+                    if (Line.Contains("Error"))
+                    {
+                        MessageBox.Show("An error has occurred during list operation. Please check the logs.", "Error");
+                        TV_ListPak.EndUpdate();
+                        return;
+                    }
+
+                    if (!bFoundMountPoint && Line.Contains("Mount point"))
+                    {
+                        MountPointNode.Nodes.Add(Line.Substring(Line.IndexOf("Mount point")  + 11));
+                        bFoundMountPoint = true;
+                    }
+                }
+                TV_ListPak.ExpandAll();
+                TV_ListPak.EndUpdate();
+            }
+        }
+
+        #endregion List & Extract
 
         #region Logging
 

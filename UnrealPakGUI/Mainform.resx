@@ -141,10 +141,7 @@
   <data name="CKB_ContentOnly.ToolTip" xml:space="preserve">
     <value>If checked, only files under "Content" and its subfolders are packed, so the pak mount point will be set to "../../../&lt;ProjectName&gt;/Content/*". Otherwise mount point is set to the common root directory of the input files.</value>
   </data>
-  <metadata name="TT_ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>783, 9</value>
-  </metadata>
-  <metadata name="TT_ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>783, 9</value>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>886, 9</value>
   </metadata>
 </root>
