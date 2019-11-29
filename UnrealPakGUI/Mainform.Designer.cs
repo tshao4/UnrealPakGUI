@@ -58,6 +58,8 @@
             this.CKB_AsPatch = new System.Windows.Forms.CheckBox();
             this.TB_BatchOutputDir = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.BTN_Extract = new System.Windows.Forms.Button();
             this.BTN_BrowseExtractToDir = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.TB_ExtractToDir = new System.Windows.Forms.TextBox();
@@ -379,6 +381,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.BTN_Extract);
             this.tabPage3.Controls.Add(this.BTN_BrowseExtractToDir);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.TB_ExtractToDir);
@@ -390,6 +394,30 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "List & Extract";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(641, 33);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 24);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Drag pak file\r\n👈 HERE";
+            // 
+            // BTN_Extract
+            // 
+            this.BTN_Extract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTN_Extract.Location = new System.Drawing.Point(644, 397);
+            this.BTN_Extract.Name = "BTN_Extract";
+            this.BTN_Extract.Size = new System.Drawing.Size(90, 30);
+            this.BTN_Extract.TabIndex = 18;
+            this.BTN_Extract.Text = "Extract";
+            this.TT_ToolTip.SetToolTip(this.BTN_Extract, "Start extracting!");
+            this.BTN_Extract.UseVisualStyleBackColor = true;
+            this.BTN_Extract.Click += new System.EventHandler(this.BTN_Extract_Click);
             // 
             // BTN_BrowseExtractToDir
             // 
@@ -633,6 +661,8 @@
         private System.Windows.Forms.TextBox TB_ExtractToDir;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripDropDownButton BTN_Logs;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button BTN_Extract;
     }
 }
 

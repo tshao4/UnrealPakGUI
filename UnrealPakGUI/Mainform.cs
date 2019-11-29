@@ -22,6 +22,7 @@ namespace UnrealPakGUI
         string ProjectFilePath;
         string BatchOutputPath;
         string ExtractToPath;
+        string ListedFileName;
         bool bContentOnly = false;
         bool bCompression = false;
         bool bEncryption = false;
@@ -197,6 +198,40 @@ namespace UnrealPakGUI
             }
         }
 
+        private void BTN_Extract_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(ListedFileName))
+            {
+                MessageBox.Show("File does not exist!", "File not found");
+                return;
+            }
+
+            if (Path.GetExtension(ListedFileName) != ".pak")
+            {
+                MessageBox.Show("Only supports *.pak file!", "Unsupported file");
+                return;
+            }
+
+            ApplyConfigs();
+            if (!ValidateConfigs())
+            {
+                return;
+            }
+
+            if (!Directory.Exists(ExtractToPath))
+            {
+                MessageBox.Show("Trying to extract to a directory that does not exist!", "Invalid destination directory");
+                return;
+            }
+
+            ShowLog("/////////////////////// START EXTRACTING ////////////////////////");
+            ShowLog($"Extracting file {ListedFileName}");
+
+            Thread Worker = new Thread(() => RunExtractWorker(ListedFileName));
+            Worker.IsBackground = true;
+            Worker.Start();
+        }
+
         private void BTN_Logs_Click(object sender, EventArgs e)
         {
             Logs.Show();
@@ -354,15 +389,15 @@ namespace UnrealPakGUI
                 return;
             }
 
-            string FileName = FileNames[0];
+            ListedFileName = FileNames[0];
 
-            if (!File.Exists(FileName))
+            if (!File.Exists(ListedFileName))
             {
                 MessageBox.Show("File does not exist!", "File not found");
                 return;
             }
 
-            if (Path.GetExtension(FileName) != ".pak")
+            if (Path.GetExtension(ListedFileName) != ".pak")
             {
                 MessageBox.Show("Only supports *.pak file!", "Unsupported file");
                 return;
@@ -375,11 +410,11 @@ namespace UnrealPakGUI
             }
 
             ShowLog("//////////////////////// START LISTING //////////////////////////");
-            ShowLog($"Listing file {FileName}");
+            ShowLog($"Listing file {ListedFileName}");
             TV_ListPak.Nodes.Clear();
             ListOutput.Clear();
 
-            Thread Worker = new Thread(() => RunListWorker(FileName));
+            Thread Worker = new Thread(() => RunListWorker(ListedFileName));
             Worker.IsBackground = true;
             Worker.Start();
         }
@@ -680,6 +715,48 @@ namespace UnrealPakGUI
                 MountPointNode.Expand();
                 FilesNode.Collapse();
                 TV_ListPak.EndUpdate();
+            }
+        }
+
+        private void RunExtractWorker(string FileToExtract)
+        {
+            string Args = FileToExtract + " -extract " + ExtractToPath;
+            if (bEncryption)
+            {
+                Args += $" -cryptokeys={CryptoFilePath}";
+            }
+            ProcessStartInfo StartInfo = new ProcessStartInfo(UnrealPakPath, Args);
+            StartInfo.CreateNoWindow = true;
+            StartInfo.RedirectStandardOutput = true;
+            StartInfo.RedirectStandardError = true;
+            StartInfo.UseShellExecute = false;
+            Process CmdProc = Process.Start(StartInfo);
+
+            CmdProc.OutputDataReceived += new DataReceivedEventHandler(OnOutputDataReceived);
+            CmdProc.BeginOutputReadLine();
+
+            CmdProc.WaitForExit();
+            CmdProc.Close();
+
+            ShowLog("//////////////////////// DONE EXTRACTING ////////////////////////");
+
+            OpenOutputDir(ExtractToPath);
+        }
+
+        private void OpenOutputDir(string OutputDir)
+        {
+            if (this.InvokeRequired)
+            {
+                PassStringDelegate Delegate = OpenOutputDir;
+                string[] Args = { OutputDir };
+                this.Invoke(Delegate, Args);
+            }
+            else
+            {
+                if (DialogResult.Yes == MessageBox.Show("Show output folder?", "Show output folder", MessageBoxButtons.YesNo))
+                {
+                    Process.Start(OutputDir);
+                }
             }
         }
 
