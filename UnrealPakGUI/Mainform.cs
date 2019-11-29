@@ -636,25 +636,49 @@ namespace UnrealPakGUI
 
                 TreeNode FileNameNode = new TreeNode("File Name", new TreeNode[] { new TreeNode(FileName) });
                 TreeNode MountPointNode = new TreeNode("Mount Point");
+                TreeNode FilesNode = new TreeNode("Files");
                 TV_ListPak.Nodes.Add(FileNameNode);
                 TV_ListPak.Nodes.Add(MountPointNode);
+                TV_ListPak.Nodes.Add(FilesNode);
                 
                 foreach (string Line in ListOutput)
                 {
-                    if (Line.Contains("Error"))
+                    if (Line.Contains(" Error: "))
                     {
                         MessageBox.Show("An error has occurred during list operation. Please check the logs.", "Error");
                         TV_ListPak.EndUpdate();
                         return;
                     }
 
-                    if (!bFoundMountPoint && Line.Contains("Mount point"))
+                    if (!bFoundMountPoint)
                     {
-                        MountPointNode.Nodes.Add(Line.Substring(Line.IndexOf("Mount point")  + 11));
-                        bFoundMountPoint = true;
+                        if (Line.Contains("Mount point"))
+                        {
+                            MountPointNode.Nodes.Add(Line.Substring(Line.IndexOf("Mount point") + 11));
+                            bFoundMountPoint = true;
+                        }
+                    }
+                    else
+                    {
+                        if (Line.StartsWith("LogPakFile: Display: "))
+                        {
+                            string LineSubStr = Line.Substring(21);
+                            if (LineSubStr.StartsWith("\""))
+                            {
+                                FilesNode.Nodes.Add(LineSubStr);
+                            }
+                            else if (LineSubStr.StartsWith("Unreal pak executed in"))
+                            { }
+                            else
+                            {
+                                FilesNode.Text += " - " + LineSubStr;
+                            }
+                        }
                     }
                 }
-                TV_ListPak.ExpandAll();
+                FileNameNode.Expand();
+                MountPointNode.Expand();
+                FilesNode.Collapse();
                 TV_ListPak.EndUpdate();
             }
         }
