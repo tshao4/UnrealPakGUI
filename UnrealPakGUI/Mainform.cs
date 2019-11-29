@@ -368,6 +368,7 @@ namespace UnrealPakGUI
                 return;
             }
 
+            ApplyConfigs();
             if (!ValidateConfigs())
             {
                 return;
