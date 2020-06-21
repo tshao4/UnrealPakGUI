@@ -97,9 +97,9 @@ namespace UnrealPakGUI
                 return;
             }
 
-            if (!File.Exists(ProjectFilePath))
+            if (bContentOnly && !File.Exists(ProjectFilePath))
             {
-                MessageBox.Show("Project File does not exist!", "Missing Project File");
+                MessageBox.Show("Project File does not exist (<Content Files Only> requires a valid uproject file)!", "Missing Project File");
                 return;
             }
 
@@ -155,9 +155,9 @@ namespace UnrealPakGUI
                 return;
             }
 
-            if (!File.Exists(ProjectFilePath))
+            if (bContentOnly && !File.Exists(ProjectFilePath))
             {
-                MessageBox.Show("Project File does not exist!", "Missing Project File");
+                MessageBox.Show("Project File does not exist (<Content Files Only> requires a valid uproject file)!", "Missing Project File");
                 return;
             }
 
@@ -507,9 +507,8 @@ namespace UnrealPakGUI
             }
 
             Args.Add("-patchpaddingalign=2048");
-            Args.Add($"-compressionformats={ProjectFilePath}");
             Args.Add("-multiprocess");
-            
+
             Thread Worker = new Thread(() => RunPackingWorker(Args.ToArray()));
             Worker.IsBackground = true;
             Worker.Start();
@@ -576,7 +575,7 @@ namespace UnrealPakGUI
 
             return Path.GetFullPath(ResponseFilePath);
         }
-        
+
         private void RunPackingWorker(string[] Args)
         {
             string CombinedArgs = string.Empty;
@@ -675,7 +674,7 @@ namespace UnrealPakGUI
                 TV_ListPak.Nodes.Add(FileNameNode);
                 TV_ListPak.Nodes.Add(MountPointNode);
                 TV_ListPak.Nodes.Add(FilesNode);
-                
+
                 foreach (string Line in ListOutput)
                 {
                     if (Line.Contains(" Error: "))
