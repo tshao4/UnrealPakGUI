@@ -16,8 +16,11 @@ namespace UnrealPakGUI
     {
         private delegate void PassStringDelegate(string Line);
         FormLogs Logs;
-        const string UnrealPakRelativePath = @"Engine\Binaries\Win64\UnrealPak.exe";
+        const string UnrealPakRelativePath = @"Engine\Binaries\Win64\";
+        const string UnrealPakExecutable = @"UnrealPak.exe";
         string UnrealPakPath;
+        string UnrealPakEnginePath;
+        string UnrealPakCurrentFolderPath;
         string CryptoFilePath;
         string ProjectFilePath;
         string BatchOutputPath;
@@ -425,9 +428,17 @@ namespace UnrealPakGUI
 
         private bool ValidateConfigs()
         {
-            if (!File.Exists(UnrealPakPath))
+            if (File.Exists(UnrealPakEnginePath))
             {
-                MessageBox.Show($"Could not find UnrealPak.exe at {UnrealPakPath}!", "UnrealPak.exe Not Found");
+                UnrealPakPath = UnrealPakEnginePath;
+            }
+            else if (File.Exists(UnrealPakCurrentFolderPath))
+            {
+                UnrealPakPath = UnrealPakCurrentFolderPath;
+            }
+            else
+            {
+                MessageBox.Show($"Could not find UnrealPak.exe at {UnrealPakEnginePath} or {UnrealPakCurrentFolderPath}!", "UnrealPak.exe Not Found");
                 return false;
             }
 
@@ -442,7 +453,8 @@ namespace UnrealPakGUI
 
         private void ApplyConfigs()
         {
-            UnrealPakPath = Path.Combine(TB_EngineDir.Text, UnrealPakRelativePath);
+            UnrealPakEnginePath = Path.Combine(TB_EngineDir.Text, UnrealPakRelativePath, UnrealPakExecutable);
+            UnrealPakCurrentFolderPath = Path.Combine(Application.StartupPath, UnrealPakExecutable);
             CryptoFilePath = TB_CryptoFile.Text;
             ProjectFilePath = TB_ProjectFile.Text;
             BatchOutputPath = TB_BatchOutputDir.Text;

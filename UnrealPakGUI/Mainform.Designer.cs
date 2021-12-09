@@ -400,7 +400,7 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold);
+            this.label6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
             this.label6.Location = new System.Drawing.Point(641, 33);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(96, 24);
@@ -546,7 +546,9 @@
             this.TB_EngineDir.Size = new System.Drawing.Size(621, 21);
             this.TB_EngineDir.TabIndex = 0;
             this.TB_EngineDir.Text = global::UnrealPakGUI.Properties.Settings.Default.EngineDir;
-            this.TT_ToolTip.SetToolTip(this.TB_EngineDir, "Unreal Engine root directory");
+            this.TT_ToolTip.SetToolTip(this.TB_EngineDir, "Unreal Engine root directory, i.e. \"D:\\UnrealEngine\\UE_4.26\". If UnrealPak.exe is" +
+        " not found under engine directory, we will try to look for it in the same folder" +
+        " this tool is in.");
             // 
             // CKB_Compression
             // 
