@@ -2,7 +2,7 @@
 
 
 
-## Usage - English
+## Usage
 
 ### Files and Directories
 
