@@ -1,6 +1,6 @@
 # UnrealPakGUI
 
-
+The intended usage of this tool is for unreal developers to create patches and add-on content cocked with the editor. The <i>List & Extract</i> feature is just for validating packed files, not for the purpose of unpacking & repacking or modding.
 
 ## Usage
 
